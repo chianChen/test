@@ -1,0 +1,114 @@
+      <form id="recruitment-form" role="form" method="POST" action="/web/recruitment_form">
+        <input type="hidden" name="redirect" value="/recruitment">
+        <div class="form">
+          <div class="d-md-flex">
+            <div class="name"><span style="color:red;">*</span>貴公司名稱</div>
+            <input class="Body1" type="text" name="company">
+          </div>
+          <div class="d-md-flex">
+            <div class="name"><span style="color:red;">*</span>聯絡人姓名</div>
+            <input class="Body1" type="text" name="name">
+          </div>
+          <div class="d-md-flex">
+            <div class="name"><span style="color:red;">*</span>EMAIL</div>
+            <input class="Body1" type="text" name="email">
+          </div>
+          <div class="d-md-flex">
+            <div class="name"><span style="color:red;">*</span>連絡電話</div>
+            <input class="Body1" type="text" name="tel">
+          </div>
+          <div class="d-md-flex">
+            <div class="name"><span class="ml-2"></span>聯絡事由</div>
+            <input class="Body1" type="text" name="content" placeholder="非必填">
+          </div>
+          <div class="w-100" style="height: 50px;"></div>
+          <div class="submit_btn mx-auto" onclick="doSubmit()">送出</div>
+          <div class="text-left text-md-center connect">如有任何問題，歡迎與我們聯繫：02-2508-1820</div>
+        </div>
+      </form>
+
+
+
+
+<script type="text/javascript">
+
+
+  function doSubmit(){
+    if($('#recruitment-form input[name=company]').val() == ""){
+      alert("請先輸入你的公司名稱");
+      return;
+    }
+    if($('#recruitment-form input[name=name]').val() == ""){
+      alert("請先輸入你的姓名");
+      return;
+    }
+    if($('#recruitment-form input[name=email]').val() == ""){
+      alert("請先輸入你的email");
+      return;
+    }
+    if($('#recruitment-form input[name=tel]').val() == ""){
+      alert("請先輸入你的連絡電話");
+      return;
+    }
+    $('#recruitment-form').submit();
+  }
+
+
+</script>
+
+
+
+
+
+
+<?
+
+
+
+	public function recruitment_form()
+	{
+
+
+		$company = $this->input->post("company");
+		$name = $this->input->post("name");
+		$email = $this->input->post("email");
+		$tel = $this->input->post("tel");
+		$content = $this->input->post("content");
+
+		$data = array(
+			'company' => $company,
+			'name' => $name,
+			'email' => $email,
+			'tel' => $tel,
+			'content' => $content
+		);
+
+		$data['create_user'] = "self";
+		$data['create_time'] = date("Y-m-d H:i:s");
+
+
+		// update db
+		$this->db->insert("recruitment",$data);
+
+
+
+		// Mynavi Taiwan <tw-info@mynavi.jp>
+		//寄出認證信
+		$this->sesmailapi("joseph8225@niusnews.com","joseph8225@niusnews.com","【Mynavi Taiwan】企業徵才","
+您好，
+
+人才媒合 企業徵才 通知，
+公司名稱 = $company,
+聯絡人姓名 = $name,
+email = $email,
+連絡電話 = $tel,
+委託內容 = $content
+
+			");
+
+		$this->redirect("我們已收到您的企業徵才訊息，稍等幾天會有專人為您服務。",$this->input->post("redirect"));
+		return;
+
+	}
+
+?>
