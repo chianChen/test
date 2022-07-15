@@ -87,27 +87,7 @@
 		$data['create_time'] = date("Y-m-d H:i:s");
 
 
-		// update db
-		$this->db->insert("recruitment",$data);
 
-
-
-		// Mynavi Taiwan <tw-info@mynavi.jp>
-		//寄出認證信
-		$this->sesmailapi("joseph8225@niusnews.com","joseph8225@niusnews.com","【Mynavi Taiwan】企業徵才","
-您好，
-
-人才媒合 企業徵才 通知，
-公司名稱 = $company,
-聯絡人姓名 = $name,
-email = $email,
-連絡電話 = $tel,
-委託內容 = $content
-
-			");
-
-		$this->redirect("我們已收到您的企業徵才訊息，稍等幾天會有專人為您服務。",$this->input->post("redirect"));
-		return;
 
 	}
 
